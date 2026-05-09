@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Special+Elite&display=swap');
+@import "tailwindcss";
 
 :root {
   --bg-primary: #1C1C1E;

@@ -8,14 +8,6 @@ export const DIFFICULTY_CONFIG: Record<Difficulty, DifficultyConfig> = {
   Hard:   { maxAttempts: 5,  label: 'Hard',    color: '#E05555' },
 };
 
-const INITIAL_STATE: Omit<GameState, 'word' | 'category' | 'difficulty' | 'maxAttempts'> = {
-  guessedLetters: new Set<string>(),
-  wrongGuesses: 0,
-  status: 'idle',
-  score: 0,
-  streak: 0,
-  hintsUsed: 0,
-};
 
 export function useGame() {
   const [word, setWord] = useState('');
@@ -65,7 +57,7 @@ export function useGame() {
 
   // Calculate score for a win
   const calculateScore = useCallback(
-    (wrong: number, hints: number, max: number): number => {
+    (wrong: number, hints: number): number => {
       const base = { Easy: 100, Medium: 200, Hard: 350 }[difficulty];
       const wrongPenalty = wrong * 10;
       const hintPenalty = hints * 20;
@@ -94,7 +86,7 @@ export function useGame() {
       // Check win
       const allGuessed = [...word].every((l) => newGuessed.has(l));
       if (allGuessed) {
-        const points = calculateScore(newWrong, hintsUsed, maxAttempts);
+        const points = calculateScore(newWrong, hintsUsed);
         setScore((prev) => prev + points);
         setStreak((prev) => prev + 1);
         setStatus('won');
@@ -127,7 +119,7 @@ export function useGame() {
 
     const allGuessed = [...word].every((l) => newGuessed.has(l));
     if (allGuessed) {
-      const points = calculateScore(newWrong, hintsUsed + 1, maxAttempts);
+      const points = calculateScore(newWrong, hintsUsed + 1);
       setScore((prev) => prev + points);
       setStreak((prev) => prev + 1);
       setStatus('won');

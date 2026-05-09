@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import type { Easing } from 'framer-motion';
 
 interface Props {
   wrongGuesses: number;
@@ -6,17 +7,26 @@ interface Props {
 
 const STROKE = '#F5DEB3';
 const STROKE_WIDTH = 4;
+const EASE: Easing = 'easeInOut';
 const DURATION = 0.4;
 
-const draw = {
+const lineAnim = {
   hidden: { pathLength: 0, opacity: 0 },
-  visible: { pathLength: 1, opacity: 1, transition: { duration: DURATION, ease: 'easeInOut' } },
-};
+  visible: {
+    pathLength: 1,
+    opacity: 1,
+    transition: { duration: DURATION, ease: EASE },
+  },
+} as const;
 
-const circleDraw = {
+const circleAnim = {
   hidden: { scale: 0, opacity: 0 },
-  visible: { scale: 1, opacity: 1, transition: { duration: DURATION, ease: 'easeOut' } },
-};
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: { duration: DURATION, ease: 'easeOut' as Easing },
+  },
+} as const;
 
 export default function HangmanSVG({ wrongGuesses }: Props) {
   const show = (n: number) => wrongGuesses >= n;
@@ -27,23 +37,18 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
       className="w-full max-w-[260px] mx-auto"
       aria-label={`Hangman drawing: ${wrongGuesses} wrong guesses`}
     >
-      {/* === GALLOWS (always visible) === */}
-      {/* Base */}
+      {/* Gallows — always visible */}
       <line x1="20" y1="230" x2="180" y2="230" stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round" />
-      {/* Vertical pole */}
-      <line x1="60" y1="230" x2="60" y2="20" stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round" />
-      {/* Horizontal beam */}
-      <line x1="60" y1="20" x2="140" y2="20" stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round" />
-      {/* Rope */}
+      <line x1="60" y1="230" x2="60" y2="20"  stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round" />
+      <line x1="60" y1="20"  x2="140" y2="20" stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round" />
       <line x1="140" y1="20" x2="140" y2="50" stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round" />
 
-      {/* === BODY PARTS (animated) === */}
       {/* 1 — Head */}
       {show(1) && (
         <motion.circle
           cx="140" cy="65" r="15"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} fill="none"
-          variants={circleDraw}
+          variants={circleAnim}
           initial="hidden"
           animate="visible"
           style={{ originX: '140px', originY: '65px' }}
@@ -55,7 +60,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="140" y1="80" x2="140" y2="145"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
 
@@ -64,7 +69,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="140" y1="100" x2="115" y2="125"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
 
@@ -73,7 +78,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="140" y1="100" x2="165" y2="125"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
 
@@ -82,7 +87,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="140" y1="145" x2="115" y2="185"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
 
@@ -91,7 +96,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="140" y1="145" x2="165" y2="185"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
 
@@ -100,7 +105,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="115" y1="185" x2="100" y2="180"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
 
@@ -109,7 +114,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="165" y1="185" x2="180" y2="180"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
 
@@ -118,7 +123,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="115" y1="125" x2="100" y2="118"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
 
@@ -127,7 +132,7 @@ export default function HangmanSVG({ wrongGuesses }: Props) {
         <motion.line
           x1="165" y1="125" x2="180" y2="118"
           stroke={STROKE} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-          variants={draw} initial="hidden" animate="visible"
+          variants={lineAnim} initial="hidden" animate="visible"
         />
       )}
     </svg>
